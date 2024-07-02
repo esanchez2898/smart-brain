@@ -31,13 +31,13 @@ class Signin extends React.Component {
         // Manejar casos de error de status aquí
         switch (response.status) {
           case 400:
-            this.setState({ errorMessage: "Error 400: Solicitud incorrecta. Verifica los datos enviados." });
+            this.setState({ errorMessage: "Error 400: Empty. Verifica los datos enviados." });
             break;
           case 404:
-            this.setState({ errorMessage: "Error 404: Recurso no encontrado en el servidor." });
+            this.setState({ errorMessage: "Error 404:, NO EXITE EN LA BD, Recurso no encontrado en el servidor." });
             break;
           case 406:
-            this.setState({ errorMessage: "Error 406: La solicitud no es aceptable por el servidor." });
+            this.setState({ errorMessage: "Error 406: , DATOS INVALIDOS, La solicitud no es aceptable por el servidor." });
             break;
           default:
             this.setState({ errorMessage: "Error desconocido. Por favor, intenta nuevamente más tarde." });
@@ -50,12 +50,11 @@ class Signin extends React.Component {
           this.props.loadUser(user)
           this.props.onRouteChange('home');
         } else {
-          this.setState({ errorMessage: "Credenciales incorrectas. Por favor, verifica e intenta nuevamente." });
+          console.log("1, something wrong :p");
         }
       })
       .catch(error => {
-        console.error('Error al iniciar sesión:', error);
-        this.setState({ errorMessage: "Error de red. Por favor, intenta nuevamente más tarde." });
+        console.log("2, something wrong :p");
       });
   }
 
