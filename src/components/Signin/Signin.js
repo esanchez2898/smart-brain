@@ -5,7 +5,8 @@ class Signin extends React.Component {
     super(props);
     this.state = {
       signInEmail: '',
-      signInPassword: ''
+      signInPassword: '',
+      errorMessage: '' // Estado para almacenar el mensaje de error
     }
   }
 
@@ -27,35 +28,41 @@ class Signin extends React.Component {
       })
     })
       .then(response => {
-
-        response.json()
-
+        // Manejar casos de error de status aquí
         switch (response.status) {
           case 400:
-            console.log("400 testinggggg")
+            this.setState({ errorMessage: "Error 400: Solicitud incorrecta. Verifica los datos enviados." });
             break;
           case 404:
-            console.log("404 testingggggeeederer")
+            this.setState({ errorMessage: "Error 404: Recurso no encontrado en el servidor." });
             break;
           case 406:
-            console.log("406 testingggghthtg")
+            this.setState({ errorMessage: "Error 406: La solicitud no es aceptable por el servidor." });
+            break;
+          default:
+            this.setState({ errorMessage: "Error desconocido. Por favor, intenta nuevamente más tarde." });
             break;
         }
-      }
-      )
+        return response.json();
+      })
       .then(user => {
         if (user.id) {
           this.props.loadUser(user)
           this.props.onRouteChange('home');
         } else {
-          console.log("something wrong :p");
-
+          this.setState({ errorMessage: "Credenciales incorrectas. Por favor, verifica e intenta nuevamente." });
         }
       })
+      .catch(error => {
+        console.error('Error al iniciar sesión:', error);
+        this.setState({ errorMessage: "Error de red. Por favor, intenta nuevamente más tarde." });
+      });
   }
 
   render() {
     const { onRouteChange } = this.props;
+    const { errorMessage } = this.state;
+
     return (
       <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
         <main className="pa4 black-80">
@@ -91,6 +98,12 @@ class Signin extends React.Component {
                 value="Sign in"
               />
             </div>
+            {/* Mostrar mensaje de error si hay uno */}
+            {errorMessage &&
+              <div className="mv3">
+                <p className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 red">{errorMessage}</p>
+              </div>
+            }
             <div className="lh-copy mt3">
               <p onClick={() => onRouteChange('register')} className="f6 link dim black db pointer">Register</p>
             </div>
