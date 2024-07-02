@@ -10,34 +10,29 @@ class Signin extends React.Component {
   }
 
   onEmailChange = (event) => {
-    this.setState({ signInEmail: event.target.value })
+    this.setState({signInEmail: event.target.value})
   }
 
   onPasswordChange = (event) => {
-    this.setState({ signInPassword: event.target.value })
+    this.setState({signInPassword: event.target.value})
   }
 
   onSubmitSignIn = () => {
     fetch('https://smart-brain-api-backend-0s21.onrender.com/signin', {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         email: this.state.signInEmail,
         password: this.state.signInPassword
       })
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.status); // Lanza un error con el código de estado si no es exitosa
-        }
-        return response.json();
-      })
+      .then(response => response.json())
       .then(user => {
         if (user.id) {
-          this.props.loadUser(user);
+          this.props.loadUser(user)
           this.props.onRouteChange('home');
         } else {
-          switch (response.status) { // Aquí cambia a response.status
+          switch (response.status) {
             case 400:
               console.log("Empty");
               break;
@@ -47,15 +42,10 @@ class Signin extends React.Component {
             case 406:
               console.log("something wrong");
               break;
-          }
+          }          
         }
       })
-      .catch(error => {
-        console.error('Error al iniciar sesión:', error);
-        console.log("Error desconocido. Por favor, intenta nuevamente más tarde.");
-      });
   }
-
 
   render() {
     const { onRouteChange } = this.props;
@@ -95,7 +85,7 @@ class Signin extends React.Component {
               />
             </div>
             <div className="lh-copy mt3">
-              <p onClick={() => onRouteChange('register')} className="f6 link dim black db pointer">Register</p>
+              <p  onClick={() => onRouteChange('register')} className="f6 link dim black db pointer">Register</p>
             </div>
           </div>
         </main>
