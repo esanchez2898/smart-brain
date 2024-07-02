@@ -10,17 +10,17 @@ class Signin extends React.Component {
   }
 
   onEmailChange = (event) => {
-    this.setState({signInEmail: event.target.value})
+    this.setState({ signInEmail: event.target.value })
   }
 
   onPasswordChange = (event) => {
-    this.setState({signInPassword: event.target.value})
+    this.setState({ signInPassword: event.target.value })
   }
 
   onSubmitSignIn = () => {
     fetch('https://smart-brain-api-backend-0s21.onrender.com/signin', {
       method: 'post',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: this.state.signInEmail,
         password: this.state.signInPassword
@@ -29,7 +29,18 @@ class Signin extends React.Component {
       .then(response => {
 
         response.json()
-        console.log(response.status, "error testing!!!!!!1")
+
+        switch (response.status) {
+          case 400:
+            console.log("400 testinggggg")
+            break;
+          case 404:
+            console.log("404 testingggggeeederer")
+            break;
+          case 406:
+            console.log("406 testingggghthtg")
+            break;
+        }
       }
       )
       .then(user => {
@@ -38,7 +49,7 @@ class Signin extends React.Component {
           this.props.onRouteChange('home');
         } else {
           console.log("something wrong :p");
-                                 
+
         }
       })
   }
@@ -81,7 +92,7 @@ class Signin extends React.Component {
               />
             </div>
             <div className="lh-copy mt3">
-              <p  onClick={() => onRouteChange('register')} className="f6 link dim black db pointer">Register</p>
+              <p onClick={() => onRouteChange('register')} className="f6 link dim black db pointer">Register</p>
             </div>
           </div>
         </main>
