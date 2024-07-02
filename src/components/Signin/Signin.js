@@ -26,23 +26,19 @@ class Signin extends React.Component {
         password: this.state.signInPassword
       })
     })
-      .then(response => response.json())
+      .then(response => {
+
+        response.json()
+        console.log(response.status, "error testing!!!!!!1")
+      }
+      )
       .then(user => {
         if (user.id) {
           this.props.loadUser(user)
           this.props.onRouteChange('home');
         } else {
-          switch (response.status) {
-            case 400:
-              console.log("Empty");
-              break;
-            case 404:
-              console.log("wrong credentials");
-              break;
-            case 406:
-              console.log("something wrong");
-              break;
-          }          
+          console.log("something wrong :p");
+                                 
         }
       })
   }
